@@ -1,4 +1,4 @@
-import { state, style, trigger } from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 
 @Component({
@@ -13,10 +13,15 @@ import { Component } from '@angular/core';
           transform: 'translateX(0)',
         })
       ),
-      state('highlighted', style({
-        backgroundColor: 'blue',
-        transform: 'translateX(100px)'
-      })),
+      state(
+        'highlighted',
+        style({
+          'background-color': 'blue',
+          transform: 'translateX(100px)',
+        })
+      ),
+      transition('normal <=> highlighted', animate(300)),
+      //transition('highlighted => normal', animate(800)),
     ]),
   ],
 })
@@ -24,9 +29,17 @@ export class AppComponent {
   state = 'normal';
   list = ['Milk', 'Sugar', 'Bread'];
 
+  onAnimate() {
+    this.state == 'normal'
+      ? (this.state = 'highlighted')
+      : (this.state = 'normal');
+  }
+
   onAdd(item: string) {
     this.list.push(item);
   }
 
-  onDelete(value: string) {}
+  onDelete(item: string) {
+    this.list.splice(this.list.indexOf(item), 1);
+  }
 }
